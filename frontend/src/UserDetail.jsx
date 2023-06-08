@@ -20,14 +20,14 @@ function Profile() {
       .catch((err) => console.log(err));
   });
 
-  const handleLogout = () => {
-    axios
-      .get("http://localhost:8081/logout")
-      .then((res) => {
-        navigate("/login");
-      })
-      .catch((err) => console.log(err));
-  };
+  // const handleLogout = () => {
+  //   axios
+  //     .get("http://localhost:8081/logout")
+  //     .then((res) => {
+  //       navigate("/login");
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
   return (
     <div>
       <div className="d-flex justify-content-center flex-column align-items-center mt-3">
@@ -40,17 +40,15 @@ function Profile() {
           <h3>Name: {user.name}</h3>
           <h3>Email: {user.email}</h3>
           <h3>Active Tickets: {newticketCount}</h3>
-          {/* <h3>Salary: {user.salary}</h3> */}
         </div>
-        <div>
-          {/* <button className="btn btn-primary me-2">Edit</button> */}
+        {/* <div>
           <Link to="/riseTicket" className="btn btn-success  me-2">
             Rise Ticket
           </Link>
           <button className="btn btn-danger" onClick={handleLogout}>
             Logout
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

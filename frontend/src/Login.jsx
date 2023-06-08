@@ -30,6 +30,20 @@ function Login() {
         }
       })
       .catch((err) => console.log(err));
+    axios
+      .post("http://localhost:8081/superUserLogin", values)
+      .then((res) => {
+        if (
+          res.data.Status === "Success" &&
+          res.data.loginUser == "Super User Login"
+        ) {
+          const id = res.data.id;
+          navigate("/superUserDetails/" + id);
+        } else {
+          setError(res.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
 
     axios
       .post("http://localhost:8081/userlogin", values)
@@ -39,7 +53,7 @@ function Login() {
           res.data.loginUser == "User Login"
         ) {
           const id = res.data.id;
-          navigate("/userDetail/" + id);
+          navigate("/userDetailsDashboard/" + id);
         } else {
           setError(res.data.Error);
         }

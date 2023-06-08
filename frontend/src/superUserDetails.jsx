@@ -3,25 +3,25 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function Dashboard() {
+function SuperUserDetails() {
   const navigate = useNavigate();
 
   axios.defaults.withCredentials = true;
-  useEffect(() => {
-    axios.get("http://localhost:8081/dashboard").then((res) => {
-      if (res.data.Status === "Success") {
-        if (res.data.role === "admin") {
-          navigate("/");
-        } else {
-          const id = res.data.id;
-          // console.log(res.data);
-          navigate("/userDetail/" + id);
-        }
-      } else {
-        navigate("/login");
-      }
-    });
-  }, []);
+  //   useEffect(() => {
+  //     axios.get("http://localhost:8081/dashboard").then((res) => {
+  //       if (res.data.Status === "Success") {
+  //         if (res.data.role === "admin") {
+  //           navigate("/");
+  //         } else {
+  //           const id = res.data.id;
+  //           // console.log(res.data);
+  //           navigate("/userDetail/" + id);
+  //         }
+  //       } else {
+  //         navigate("/login");
+  //       }
+  //     });
+  //   }, []);
   const handleLogout = () => {
     axios
       .get("http://localhost:8081/logout")
@@ -39,19 +39,21 @@ function Dashboard() {
               href="/"
               className="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none"
             >
-              <span className="fs-5 d-none d-sm-inline">Admin Dashboard</span>
+              <span className="fs-5 d-none d-sm-inline">
+                Super User Dashboard
+              </span>
             </a>
             <ul
               className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
               id="menu"
             >
-              <li className="nav-item">
-                <Link to="/" className="nav-link align-middle px-0 text-white">
+              {/* <li className="nav-item">
+                <button className="nav-link px-0 align-middle text-white">
                   <i className="fs-4 bi-speedometer2"></i>
                   <span className="ms-1 d-none d-sm-inline ">Dashboard</span>
-                </Link>
-              </li>
-              <li>
+                </button>
+              </li> */}
+              {/* <li>
                 <Link
                   to="/users"
                   data-bs-toggle="collapse"
@@ -60,27 +62,16 @@ function Dashboard() {
                   <i className="fs-4 bi-people"></i>
                   <span className="ms-1 d-none d-sm-inline">Users</span>
                 </Link>
-              </li>
-
-              <li>
+              </li> */}
+              {/* <li>
                 <Link
-                  to="/superUser"
+                  to={"/superUserTicket"}
                   className="nav-link px-0 align-middle text-white"
                 >
-                  <i className="fs-4 bi-person"></i>
-                  <span className="ms-1 d-none d-sm-inline">Super Users</span>
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  to="/profile"
-                  className="nav-link px-0 align-middle text-white"
-                >
-                  <i className="fs-4 bi-ticket"></i>
+                  <i className="fs-4 bi-speedometer2"></i>
                   <span className="ms-1 d-none d-sm-inline">Tickets</span>
                 </Link>
-              </li>
+              </li> */}
 
               <li onClick={handleLogout}>
                 <a href="#" className="nav-link px-0 align-middle text-white">
@@ -102,4 +93,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default SuperUserDetails;

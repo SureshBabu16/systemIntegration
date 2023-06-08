@@ -10,22 +10,45 @@ import EditUser from "./EditUser";
 
 import UserDetail from "./UserDetail";
 import RiseTicket from "./RiseTicket";
+import SuperUserDetails from "./superUserDetails";
+import SuperUser from "./superUser";
+
+import AddSuperUsers from "./AddSuperUsers";
+import SuperUserTicket from "./superUserTicket";
+import UserDetailsDashboard from "./UserDetailsDashboard";
+import EditTicket from "./EditTicket";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Dashboard />}>
-          <Route path="" element={<Home />}></Route>
+          <Route index element={<Home />}></Route>
           <Route path="/users" element={<Users />}></Route>
+
           <Route path="/profile" element={<Profile />}></Route>
           <Route path="/addUsers" element={<AddUsers />}></Route>
+          <Route path="/superUser" element={<SuperUser />}></Route>
+          <Route path="/addSuperUsers" element={<AddSuperUsers />}></Route>
+
           <Route path="/EditUser/:id" element={<EditUser />}></Route>
         </Route>
         <Route exact path="/login" element={<Login />}></Route>
 
-        <Route path="/userDetail/:id" element={<UserDetail />}></Route>
-        <Route path="/riseTicket" element={<RiseTicket />}></Route>
+        <Route
+          path="/userDetailsDashboard/:id"
+          element={<UserDetailsDashboard />}
+        >
+          <Route index element={<UserDetail />}></Route>
+          <Route path="riseTicket" element={<RiseTicket />}></Route>
+          <Route path="superUserTicket" element={<SuperUserTicket />}></Route>
+        </Route>
+
+        <Route path="/superUserDetails/:id" element={<SuperUserDetails />}>
+          <Route index element={<SuperUserTicket />}></Route>
+        </Route>
+        <Route path="editTicket/:id" element={<EditTicket />}></Route>
+        {/* <Route path="/superUserTicket" element={<SuperUserTicket />}></Route> */}
       </Routes>
     </BrowserRouter>
   );

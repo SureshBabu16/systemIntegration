@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-function Profile() {
+function SuperUserTicket() {
   const [data, setData] = useState([]);
   useEffect(() => {
     axios
@@ -43,7 +43,7 @@ function Profile() {
               <th>Target Price</th>
               <th>Remarks</th>
 
-              {/* <th>Action</th> */}
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -66,12 +66,12 @@ function Profile() {
                   <td className="ticketWidth">{tickets.remarks}</td>
 
                   <td>
-                    {/* <Link
+                    <Link
                       to={`/editTicket/` + tickets.id}
                       className="btn btn-primary btn-sm me-2"
                     >
                       edit
-                    </Link> */}
+                    </Link>
 
                     {/* <button className="btn btn-sm btn-danger">delete</button> */}
                   </td>
@@ -85,4 +85,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default SuperUserTicket;
