@@ -92,7 +92,7 @@ function Login() {
               className="form-control rounded-0"
             />
           </div>
-          <button type="submit" className="btn btn-success w-100 rounded-0">
+          <button type="submit" className="btn btn-primary w-100 rounded-0">
             Login
           </button>
         </form>

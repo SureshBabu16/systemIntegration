@@ -17,7 +17,12 @@ import AddSuperUsers from "./AddSuperUsers";
 import SuperUserTicket from "./superUserTicket";
 import UserDetailsDashboard from "./UserDetailsDashboard";
 import EditTicket from "./EditTicket";
-
+import UserTicketView from "./userTicketView";
+import EditSuperUser from "./EditSuperUser";
+import SuperApprovedTicket from "./SuperApprovedTicket";
+import SuperRejectedTicket from "./SuperRejectedTicket";
+// var promtRemark;
+// global.mySpecialVariable = promtRemark;
 function App() {
   return (
     <BrowserRouter>
@@ -32,6 +37,7 @@ function App() {
           <Route path="/addSuperUsers" element={<AddSuperUsers />}></Route>
 
           <Route path="/EditUser/:id" element={<EditUser />}></Route>
+          <Route path="/EditSuperUser/:id" element={<EditSuperUser />}></Route>
         </Route>
         <Route exact path="/login" element={<Login />}></Route>
 
@@ -41,12 +47,27 @@ function App() {
         >
           <Route index element={<UserDetail />}></Route>
           <Route path="riseTicket" element={<RiseTicket />}></Route>
-          <Route path="superUserTicket" element={<SuperUserTicket />}></Route>
+          <Route path="userTicketView" element={<UserTicketView />}></Route>
+
+          {/* <Route path="superUserTicket" element={<SuperUserTicket />}></Route> */}
         </Route>
 
         <Route path="/superUserDetails/:id" element={<SuperUserDetails />}>
-          <Route index element={<SuperUserTicket />}></Route>
+          <Route
+            path="superUserTicket"
+            index
+            element={<SuperUserTicket />}
+          ></Route>
+          <Route
+            path="superApprovedTicket"
+            element={<SuperApprovedTicket />}
+          ></Route>
+          <Route
+            path="superRejectedTicket"
+            element={<SuperRejectedTicket />}
+          ></Route>
         </Route>
+
         <Route path="editTicket/:id" element={<EditTicket />}></Route>
         {/* <Route path="/superUserTicket" element={<SuperUserTicket />}></Route> */}
       </Routes>

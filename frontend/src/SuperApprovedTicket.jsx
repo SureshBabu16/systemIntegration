@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-function Profile() {
+function SuperApprovedTicket() {
   const [data, setData] = useState([]);
   const [order, setorder] = useState("ASC");
   axios.defaults.withCredentials = true;
@@ -25,7 +25,7 @@ function Profile() {
   };
   useEffect(() => {
     axios
-      .get("http://localhost:8081/getTicketsAdmin")
+      .get("http://localhost:8081/getApprovedTickets")
       .then((res) => {
         if (res.data.Status === "Success") {
           console.log(res.data.Result);
@@ -50,7 +50,7 @@ function Profile() {
   return (
     <div className="px-5 py-3">
       <div className="d-flex justify-content-center mt-2">
-        <h3>Ticket List</h3>
+        <h3>Closed List</h3>
       </div>
       {/* <Link to="/addUsers" className="btn btn-success">
         Add User
@@ -89,16 +89,11 @@ function Profile() {
               </th>
               <th
                 className="pointer"
-                id="changeColorHeader"
                 onClick={() => sorting("endCustomerLocation")}
               >
                 Raised Date
               </th>
-              <th
-                className="pointer"
-                onClick={() => sorting("respondedDate2")}
-                id="changeColorHeader"
-              >
+              <th className="pointer" onClick={() => sorting("resondedDate2")}>
                 Responded Date
               </th>
               <th
@@ -122,12 +117,11 @@ function Profile() {
               <th className="pointer" onClick={() => sorting("remarks")}>
                 User Remarks
               </th>
-              <th
-                className="pointer"
-                id="changeColorHeader"
-                onClick={() => sorting("status")}
-              >
-                Status
+              <th className="pointer" onClick={() => sorting("status")}>
+                Enquiry Status
+              </th>
+              <th className="pointer" onClick={() => sorting("status")}>
+                Ticket Status
               </th>
 
               {/* <th>Action</th> */}
@@ -144,10 +138,10 @@ function Profile() {
                   <td className="ticketWidth">{tickets.location}</td>
                   <td className="ticketWidth">{tickets.endCustomerName}</td>
                   <td className="ticketWidth">{tickets.endCustomerLocation}</td>
-                  <td className="ticketWidth dateColumn" id="changeColor">
+                  <td className="ticketWidth dateColumn">
                     {tickets.createdDate}
                   </td>
-                  <td className="ticketWidth dateColumn" id="changeColor">
+                  <td className="ticketWidth dateColumn">
                     {tickets.respondedDate2}
                   </td>
 
@@ -160,8 +154,9 @@ function Profile() {
 
                   <td className="ticketWidth">{tickets.targetPrice}</td>
                   <td className="ticketWidth">{tickets.remarks}</td>
-                  <td className="ticketWidth statusResult" id="changeColor">
-                    {tickets.status}
+                  <td className="ticketWidth statusResult">{tickets.status}</td>
+                  <td className="ticketWidth statusResult">
+                    {tickets.ticketStatus}
                   </td>
                   {/* <td> */}
                   {/* <Link
@@ -183,4 +178,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default SuperApprovedTicket;

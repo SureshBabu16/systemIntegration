@@ -70,7 +70,16 @@ app.get("/getSuperUsers", (req, res) => {
   });
 });
 
-app.get("/getTickets", (req, res) => {
+app.get("/getTickets/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = "SELECT * FROM tickets where id=?";
+  con.query(sql, [id], (err, result) => {
+    if (err) return res.json({ Error: "Get newUser error in sql" });
+    return res.json({ Status: "Success", Result: result });
+  });
+});
+
+app.get("/getTicketsAdmin", (req, res) => {
   const sql = "SELECT * FROM tickets";
   con.query(sql, (err, result) => {
     if (err) return res.json({ Error: "Get newUser error in sql" });
@@ -78,7 +87,53 @@ app.get("/getTickets", (req, res) => {
   });
 });
 
-app.get("/get/:id", (req, res) => {
+app.get("/getApprovedTickets", (req, res) => {
+  const sql =
+    "SELECT * FROM tickets where ticketStatus!='' and ticketStatus!='Inprogress' and ticketStatus!='Open'";
+  con.query(sql, (err, result) => {
+    if (err) return res.json({ Error: "Get newUser error in sql" });
+    return res.json({ Status: "Success", Result: result });
+  });
+});
+app.get("/getRejectedTickets", (req, res) => {
+  const sql = "SELECT * FROM tickets where status!='' and status!='Accepted'";
+  con.query(sql, (err, result) => {
+    if (err) return res.json({ Error: "Get newUser error in sql" });
+    return res.json({ Status: "Success", Result: result });
+  });
+});
+app.get("/getSuperTickets", (req, res) => {
+  const sql =
+    "SELECT * FROM tickets where status !='Rejected' and ticketStatus !='Closed'";
+  // "SELECT * FROM tickets where status !='Rejected'";
+
+  con.query(sql, (err, result) => {
+    if (err) return res.json({ Error: "Get newUser error in sql" });
+    return res.json({ Status: "Success", Result: result });
+  });
+});
+
+app.get("/userGetTickets/:id", (req, res) => {
+  const id = req.params.id;
+
+  const sql = "SELECT * FROM tickets where createdId = ?";
+  con.query(sql, [id], (err, result) => {
+    if (err) return res.json({ Error: "Get newUser error in sql" });
+    return res.json({ Status: "Success", Result: result });
+    // console.log(result);
+  });
+});
+
+// app.get("/userGetTickets007", (req, res) => {
+//   const sql = "SELECT * FROM tickets";
+//   const sql2 = "SELECT * FROM newUser";
+//   con.query(sql, sql2, (err, result) => {
+//     if (err) return res.json({ Error: "Get 2 table error in sql" });
+//     return res.json({ Status: "Success", Result: result });
+//   });
+// });
+
+app.get("/getUser/:id", (req, res) => {
   const id = req.params.id;
   const sql = "SELECT * FROM newUser where id = ?";
   con.query(sql, [id], (err, result) => {
@@ -87,14 +142,27 @@ app.get("/get/:id", (req, res) => {
   });
 });
 
+// app.get("/getTicketId/:id", (req, res) => {
+//   const id = req.params.id;
+//   const sql = "SELECT * FROM newUser where id = ?";
+//   con.query(sql, [id], (err, result) => {
+//     if (err) return res.json({ Error: "get newUser error in sql" });
+//     return res.json({ Status: "Success", Result: result });
+//   });
+// });
+
 app.put("/updateUser/:id", (req, res) => {
   const id = req.params.id;
-  const sql = "Update newUser set name = ?  WHERE id = ?";
-  console.log(req.body.id);
-  con.query(sql, [req.body.name, id], (err, result) => {
-    if (err) return res.json({ Error: "Update newUser error in sql" });
-    return res.json({ Status: "Success" });
-  });
+  const sql =
+    "Update newUser set name = ?, email = ?, Location = ?  WHERE id = ?";
+  con.query(
+    sql,
+    [req.body.name, req.body.email, req.body.Location, id],
+    (err) => {
+      if (err) return res.json({ Error: "Update newUser error in sql" });
+      return res.json({ Status: "Success" });
+    }
+  );
 });
 
 app.get("/get/:id", (req, res) => {
@@ -105,17 +173,67 @@ app.get("/get/:id", (req, res) => {
     return res.json({ Status: "Success", Result: result });
   });
 });
+app.get("/getSuperUser/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = "SELECT * FROM superuserlogin where id = ?";
+  con.query(sql, [id], (err, result) => {
+    if (err) return res.json({ Error: "get tickets error in sql" });
+    return res.json({ Status: "Success", Result: result });
+  });
+});
+app.put("/updateSuperUser/:id", (req, res) => {
+  const id = req.params.id;
+  const sql =
+    "Update superuserlogin set name = ?, email = ?, location = ?   WHERE id = ?";
+  con.query(
+    sql,
+    [req.body.name, req.body.email, req.body.location, id],
+    (err, result) => {
+      if (err) return res.json({ Error: "Update newUser error in sql" });
+      return res.json({ Status: "Success" });
+    }
+  );
+});
 
 app.put("/updateTicket/:id", (req, res) => {
   const id = req.params.id;
-  const sql = "Update tickets set productSpecification = ?  WHERE id = ?";
+  const sql =
+    "Update tickets set productSpecification = ?, quantity = ?, makePreferred = ?, modelPreferred = ?, targetPrice = ?, remarks = ?, respondedDate2 = ?, ticketStatus=?  WHERE id = ?";
   console.log(req.body.id);
-  con.query(sql, [req.body.productSpecification, id], (err, result) => {
-    if (err)
-      return res.json({ Error: "Update productSpecification error in sql" });
-    return res.json({ Status: "Success" });
-  });
+
+  con.query(
+    sql,
+    [
+      req.body.productSpecification,
+      req.body.quantity,
+      req.body.makePreferred,
+      req.body.modelPreferred,
+      req.body.targetPrice,
+      req.body.remarks,
+      req.body.respondedDate2,
+      req.body.ticketStatus,
+      id,
+    ],
+
+    (err, result) => {
+      if (err)
+        return res.json({ Error: "Update productSpecification error in sql" });
+      return res.json({ Status: "Success" });
+    }
+  );
 });
+
+// app.put("/updateTicket/:id", (req, res) => {
+//   const id = req.params.id;
+
+//   const sql = "UPDATE tickets SET productSpecification = ?  WHERE id = ?";
+
+//   con.query(sql, [req.body.productSpecification, id], (err, result) => {
+//     if (err)
+//       return res.json({ Error: "Update productSpecification error in SQL" });
+//     return res.json({ Status: "Success" });
+//   });
+// });
 
 app.delete("/delete/:id", (req, res) => {
   const id = req.params.id;
@@ -135,18 +253,119 @@ app.delete("/deleteSuperUser/:id", (req, res) => {
   });
 });
 
-app.post("/addUsers", upload.single("image"), (req, res) => {
-  // app.post("/addUsers", (req, res) => {
+app.put("/updateTicketStatusReject/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = "Update tickets set status = 'Rejected' where id = ?";
+  con.query(sql, [id], (err, result) => {
+    if (err) return res.json({ Error: "delete tickets error in sql" });
+    return res.json({ Status: "Success" });
+  });
+});
+
+// app.put("/updateSuperUserRemark/:id", (req, res) => {
+//   const { id } = req.params.id;
+//   const { newData } = req.body.superUserRemark;
+
+//   const updateQuery = `UPDATE your_table SET your_column = '${newData}' WHERE id = ${id}`;
+
+//   connection.query(updateQuery, (err, result) => {
+//     if (err) {
+//       console.error("Error updating data: ", err, result);
+//       res.sendStatus(500);
+//       return;
+//     }
+//     console.log("Data updated");
+//     res.sendStatus(200);
+//   });
+// });
+
+// app.put("/updateSuperUserRemark/:id", (req, res) => {
+//   const id = req.params.id;
+//   const sql =
+//     "Update tickets set superUserRemark = '?'is not NULL WHERE id = ?";
+
+//   con.query(sql, [req.body.superUserRemark, id], (err, result) => {
+//     if (err)
+//       return res.json({
+//         Error: "Update Super user Remark error in sql",
+//       });
+//     return res.json({ Status: "Success" });
+//   });
+// });
+
+app.put("/updateSuperUserRemark/:id", (req, res) => {
+  const id = req.params.id;
+  const superUserRemark = req.body.superUserRemark;
+  const sql = "UPDATE tickets SET superUserRemark = ? WHERE id = ?";
+
+  con.query(sql, [superUserRemark, id], (err, result) => {
+    if (err) {
+      return res.json({
+        Error: "Update Super User Remark error in SQL",
+      });
+    }
+    return res.json({ Status: "Success" });
+  });
+});
+
+// app.put("/updateUser/:id", (req, res) => {
+//   const id = req.params.id;
+//   const sql =
+//     "Update newUser set name = ?, email = ?, location = ?  WHERE id = ?";
+//   con.query(
+//     sql,
+//     [req.body.name, req.body.email, req.body.location, id],
+//     (err) => {
+//       if (err) return res.json({ Error: "Update newUser error in sql" });
+//       return res.json({ Status: "Success" });
+//     }
+//   );
+// });
+
+app.put("/updateTicketStatusApproved/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = "Update tickets set status = 'Accepted' where id = ?";
+  con.query(sql, [id], (err, result) => {
+    if (err) return res.json({ Error: "delete tickets error in sql" });
+    return res.json({ Status: "Success", result });
+  });
+});
+
+app.put("/updateTicketStatusOpen/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = "Update tickets set ticketStatus = 'Open' where id = ?";
+  // const sql =
+  //   "INSERT INTO tickets (`ticketStatus`) VALUES (`Open`) where id = ?";
+  con.query(sql, [id], (err, result) => {
+    if (err) return res.json({ Error: "delete tickets error in sql" });
+    return res.json({ Status: "Success", result });
+  });
+});
+
+app.put("/updateTicketStatusDate/:id", (req, res) => {
+  const id = req.params.id;
   const sql =
-    "INSERT INTO newUser (`name`,`email`,`password`,`image`) VALUES (?)";
+    // "UPDATE tickets SET respondedDate2 = CONCAT(CURDATE(), ' ' , time(mytime)) WHERE id = ?";
+    "Update tickets set respondedDate2 = SYSDATE() where id=?";
+  con.query(sql, [id], (err, result) => {
+    if (err) return res.json({ Error: "delete tickets error in sql" });
+    return res.json({ Status: "Success", result });
+  });
+});
+
+// app.post("/addUsers", upload.single("image"), (req, res) => {
+app.post("/addUsers", (req, res) => {
+  const sql =
+    "INSERT INTO newUser (`name`,`email`,`password`,`location`) VALUES (?)";
   bcrypt.hash(req.body.password.toString(), 10, (err, hash) => {
     if (err) return res.json({ Error: "Error in hashing password" });
     const values = [
       req.body.name,
       req.body.email,
       hash,
+      req.body.location,
       // req.body.role,
-      req.file.filename,
+      // req.file.filename,
     ];
     con.query(sql, [values], (err, result) => {
       if (err) return res.json({ Error: "Inside singup query" });
@@ -180,8 +399,9 @@ app.post("/riseTicket", (req, res) => {
   // const values = [req.body.customerName, req.body.details];
 
   const sql =
-    "INSERT INTO tickets ( `salesPersonName`, `location`, `endCustomerName` , `endCustomerLocation` , `productSpecification` , `quantity` , `makePreferred` , `modelPreferred` , `targetPrice` , `remarks` ) VALUES ( ? )";
+    "INSERT INTO tickets ( `createdId`,`salesPersonName`, `location`, `endCustomerName` , `endCustomerLocation` , `productSpecification` , `quantity` , `makePreferred` , `modelPreferred` , `targetPrice` , `remarks`, `createdDate` ) VALUES ( ? )";
   const values = [
+    req.body.createdId,
     req.body.salesPersonName,
     req.body.location,
     req.body.endCustomerName,
@@ -192,7 +412,9 @@ app.post("/riseTicket", (req, res) => {
     req.body.modelPreferred,
     req.body.targetPrice,
     req.body.remarks,
+    req.body.createdDate,
   ];
+  // const userInfo = [createdId: getUserId.value,]
   con.query(sql, [values], (err, result) => {
     if (err)
       return res.json({
@@ -224,6 +446,32 @@ app.get("/dashboard", verifyUser, (req, res) => {
   return res.json({ Status: "Success", role: req.role, id: req.id });
 });
 
+app.get("/ticketActiveCount", (req, res) => {
+  const sql =
+    "Select count(*) as tickets from tickets where ticketStatus = 'Open' OR ticketStatus = 'Inprogress'";
+  con.query(sql, (err, result) => {
+    if (err) return res.json({ Error: "Error in runnig query" });
+    return res.json(result);
+  });
+});
+
+app.get("/ticketApprovedCount", (req, res) => {
+  const sql =
+    "Select count(*) as tickets from tickets where ticketStatus = 'Closed'";
+  con.query(sql, (err, result) => {
+    if (err) return res.json({ Error: "Error in runnig query" });
+    return res.json(result);
+  });
+});
+app.get("/ticketRejectedCount", (req, res) => {
+  const sql =
+    "Select count(*) as tickets from tickets where status = 'Rejected'";
+  con.query(sql, (err, result) => {
+    if (err) return res.json({ Error: "Error in runnig query" });
+    return res.json(result);
+  });
+});
+
 app.get("/superUserCount", (req, res) => {
   const sql = "Select count(id) as superUserLogin from superUserLogin";
   con.query(sql, (err, result) => {
@@ -231,6 +479,7 @@ app.get("/superUserCount", (req, res) => {
     return res.json(result);
   });
 });
+
 app.get("/newUserCount", (req, res) => {
   const sql = "Select count(id) as newUser from newUser";
   con.query(sql, (err, result) => {

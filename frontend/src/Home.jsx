@@ -5,7 +5,7 @@ function Home() {
   const [adminCount, setAdminCount] = useState();
   const [newUserCount, setnewUserCount] = useState();
   const [newticketCount, setticketCount] = useState();
-
+  axios.defaults.withCredentials = true;
   useEffect(() => {
     axios
       .get("http://localhost:8081/superUserCount")

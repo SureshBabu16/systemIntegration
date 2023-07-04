@@ -2,46 +2,39 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-function EditUser() {
+function EditSuperUser() {
   const [data, setData] = useState({
     name: "",
     email: "",
-    Location: "",
+    location: "",
   });
   const navigate = useNavigate();
 
   const { id } = useParams();
-
-  // console.log(a);
+  axios.defaults.withCredentials = true;
   useEffect(() => {
     axios
-      .get("http://localhost:8081/getUser/" + id)
+      .get("http://localhost:8081/getSuperUser/" + id)
       .then((res) => {
-        // setData({
-        //   ...data,
-        //   name: a.value,
-        //   email: b.value,
-        //   Location: c.value,
-        // });
-        const User = res.data.Result[0];
+        const superUser = res.data.Result[0];
         setData({
-          name: User.name,
-          email: User.email,
-          Location: User.Location,
+          name: superUser.name,
+          email: superUser.email,
+          location: superUser.location,
         });
       })
       .catch((err) => console.log(err));
   }, [id]);
-  axios.defaults.withCredentials = true;
+
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
-      .put("http://localhost:8081/updateUser/" + id, data)
+      .put("http://localhost:8081/updateSuperUser/" + id, data)
       .then((res) => {
         if (res.data.Status === "Success") {
           console.log(data);
-
-          navigate("/users");
+          // window.location.reload(true);
+          navigate("/superUser");
         }
       })
       .catch((err) => console.log(err));
@@ -49,43 +42,49 @@ function EditUser() {
 
   return (
     <div className="d-flex flex-column align-items-center pt-4">
-      <h2>Edit Users</h2>
+      <h2>Edit Super Users</h2>
       <form className="row g-3 w-50" onSubmit={handleSubmit}>
         <div className="col-12">
-          <label htmlFor="UserName" className="form-label">
+          <label htmlFor="SuperUserName" className="form-label">
             Name :
           </label>
           <input
             type="text"
             className="form-control"
             id="inputName"
+            name="name"
             placeholder="Enter Name"
+            autoComplete="off"
             onChange={(e) => setData({ ...data, name: e.target.value })}
             value={data.name}
             required
           />
-          <label htmlFor="UserName" className="form-label">
+          <label htmlFor="SuperUserEmail" className="form-label">
             Email :
           </label>
           <input
             type="text"
             className="form-control"
             id="inputEmail"
-            placeholder="Enter Email"
+            name="email"
+            placeholder="Enter email"
+            autoComplete="off"
             onChange={(e) => setData({ ...data, email: e.target.value })}
             value={data.email}
             required
           />
-          <label htmlFor="UserName" className="form-label">
+          <label htmlFor="SuperUserLocation" className="form-label">
             Location :
           </label>
           <input
             type="text"
             className="form-control"
-            id="inputLocation"
-            placeholder="Enter Location"
-            onChange={(e) => setData({ ...data, Location: e.target.value })}
-            value={data.Location}
+            id="inputEmail"
+            name="location"
+            placeholder="Enter location"
+            autoComplete="off"
+            onChange={(e) => setData({ ...data, location: e.target.value })}
+            value={data.location}
             required
           />
         </div>
@@ -100,4 +99,4 @@ function EditUser() {
   );
 }
 
-export default EditUser;
+export default EditSuperUser;

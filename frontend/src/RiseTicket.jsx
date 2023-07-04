@@ -7,13 +7,15 @@ function RiseTicket() {
   const { id } = useParams();
   // const navigate = useNavigate();
   const [user, setUser] = useState([]);
+  // console.log(user);
   useEffect(() => {
     axios
-      .get("http://localhost:8081/get/" + id)
+      .get("http://localhost:8081/getUser/" + id)
       .then((res) => setUser(res.data.Result[0]))
       .catch((err) => console.log(err));
   });
   const [data, setTicket] = useState({
+    createdId: "",
     salesPersonName: "",
     location: "",
     endCustomerName: "",
@@ -25,12 +27,40 @@ function RiseTicket() {
     targetPrice: "",
     remarks: "",
   });
+  axios.defaults.withCredentials = true;
   const navigate = useNavigate();
+  // var salesPersonNameId = document.getElementById("salesPersonNameId");
+  // var endCustomerLocationId = document.getElementById("endCustomerLocationId");
+  // var createdId = document.getElementById("userIdHidden");
+  var getUserId = document.getElementById("getUserId");
+  var getUserName = document.getElementById("getUserName");
+
+  var getUserLocation = document.getElementById("getUserLocation");
+  var createdDateId = document.getElementById("createdDateId");
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formdata = new FormData();
-    formdata.append("salesPersonName", data.salesPersonName);
-    formdata.append("location", data.location);
+    // console.log(data);
+    // console.log(getUserId.value);
+    // console.log(getUserName.value);
+
+    // console.log(getUserLocation.value);
+
+    // console.log(createdId.value);
+    // formdata.append((user.name = data.salesPersonName));
+    // data.location = user.Location;
+    // formdata.append("createdId", createdId.value);
+    // formdata.append("salesPersonName", data.salesPersonName);
+    // formdata.append("location", data.location);
+    // formdata.append(("createdId", getUserId.value));
+    // formdata.append(("salesPersonName", getUserName.value));
+    // formdata.append(("location", getUserLocation.value));
+    data.createdId = getUserId.value;
+    data.salesPersonName = getUserName.value;
+    data.location = getUserLocation.value;
+    console.log(data);
+    data.createdDate = createdDateId.value;
     formdata.append("endCustomerName", data.endCustomerName);
     formdata.append("endCustomerLocation", data.endCustomerLocation);
     formdata.append("productSpecification", data.productSpecification);
@@ -39,13 +69,20 @@ function RiseTicket() {
     formdata.append("modelPreferred", data.modelPreferred);
     formdata.append("targetPrice", data.targetPrice);
     formdata.append("remarks", data.remarks);
-    console.log(data);
+    // console.log(data);
     // formdata: data;
-    console.log(formdata);
+    // console.log(formdata);
     axios
-      .post("http://localhost:8081/riseTicket", data)
+      .post(
+        "http://localhost:8081/riseTicket",
+        data,
+        getUserId.value,
+        getUserName.value,
+        getUserLocation.value,
+        createdDateId.value
+      )
       .then((res) => {
-        console.log(res);
+        console.log(data);
         // const id = res.data.id;
         navigate("/userDetailsDashboard/" + id);
       })
@@ -84,6 +121,51 @@ function RiseTicket() {
             onChange={(e) => setTicket({ ...data, details: e.target.value })}
           />
         </div> */}
+        {/* <div className="col-6">
+          <label htmlFor="inputName" className="form-label">
+            Created ID
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="salesPersonNameId"
+            value={user.name}
+            // placeholder="Enter Sales Person Name"
+            autoComplete="off"
+            onChange={(e) =>
+              setTicket({ ...data, salesPersonName: e.target.value })
+            }
+          />
+        </div> */}
+        <input
+          type="text"
+          className="form-control getUserId"
+          id="getUserId"
+          defaultValue={user.id}
+          autoComplete="off"
+          onChange={(e) => setTicket({ ...data, createdId: e.target.value })}
+        />
+        <input
+          type="text"
+          className="form-control getUserId"
+          id="createdDateId"
+          // defaultValue={user.id}
+          value={new Date().toLocaleString() + ""}
+          autoComplete="off"
+          onChange={(e) => setTicket({ ...data, createdDate: e.target.value })}
+        />
+
+        {/* <h6>
+          Created ID: <span id="getUserId">{user.id}</span>
+        </h6>
+        <h6>
+          Sales Person Name: <span id="getUserName">{user.name}</span>
+        </h6>
+
+        <h6>
+          Sales Person Location:{" "}
+          <span id="getUserLocation">{user.Location}</span>
+        </h6> */}
 
         <div className="col-6">
           <label htmlFor="inputName" className="form-label">
@@ -92,7 +174,8 @@ function RiseTicket() {
           <input
             type="text"
             className="form-control"
-            id="salesPersonName"
+            id="getUserName"
+            value={user.name}
             placeholder="Enter Sales Person Name"
             autoComplete="off"
             onChange={(e) =>
@@ -104,12 +187,42 @@ function RiseTicket() {
           <label htmlFor="inputName" className="form-label">
             Location
           </label>
+          <input
+            type="text"
+            className="form-control"
+            id="getUserLocation"
+            value={user.Location}
+            autoComplete="off"
+            onChange={(e) => setTicket({ ...data, location: e.target.value })}
+          />
+        </div>
+        <div className="col-6">
+          <label htmlFor="inputName" className="form-label">
+            End Customer Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="endCustomerName"
+            placeholder="Enter End Customer Name"
+            autoComplete="off"
+            onChange={(e) =>
+              setTicket({ ...data, endCustomerName: e.target.value })
+            }
+          />
+        </div>
+        <div className="col-6">
+          <label htmlFor="inputName" className="form-label">
+            End Customer Location
+          </label>
           <select
             name="state"
             id="state"
             className="dropdownSelect"
             // defaultValue="Select State"
-            onChange={(e) => setTicket({ ...data, location: e.target.value })}
+            onChange={(e) =>
+              setTicket({ ...data, endCustomerLocation: e.target.value })
+            }
           >
             <option value="">Select State</option>
             <option value="Andhra Pradesh">Andhra Pradesh</option>
@@ -153,44 +266,6 @@ function RiseTicket() {
             <option value="Uttarakhand">Uttarakhand</option>
             <option value="West Bengal">West Bengal</option>
           </select>
-          {/* <input
-            type="text"
-            className="form-control"
-            id="location"
-            placeholder="Enter Location"
-            autoComplete="off"
-            onChange={(e) => setTicket({ ...data, location: e.target.value })}
-          /> */}
-        </div>
-        <div className="col-6">
-          <label htmlFor="inputName" className="form-label">
-            End Customer Name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="endCustomerName"
-            placeholder="Enter End Customer Name"
-            autoComplete="off"
-            onChange={(e) =>
-              setTicket({ ...data, endCustomerName: e.target.value })
-            }
-          />
-        </div>
-        <div className="col-6">
-          <label htmlFor="inputName" className="form-label">
-            End Customer Location
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="endCustomerLocation"
-            placeholder="Enter End Customer Location"
-            autoComplete="off"
-            onChange={(e) =>
-              setTicket({ ...data, endCustomerLocation: e.target.value })
-            }
-          />
         </div>
         <div className="col-6">
           <label htmlFor="inputName" className="form-label">
@@ -272,7 +347,7 @@ function RiseTicket() {
 
         <div className="col-12">
           <label htmlFor="inputName" className="form-label">
-            Remarks
+            User Remarks
           </label>
           <textarea
             type="text"

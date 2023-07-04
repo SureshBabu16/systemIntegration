@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-function Profile() {
+function SuperRejectedTicket() {
   const [data, setData] = useState([]);
   const [order, setorder] = useState("ASC");
   axios.defaults.withCredentials = true;
@@ -25,7 +25,7 @@ function Profile() {
   };
   useEffect(() => {
     axios
-      .get("http://localhost:8081/getTicketsAdmin")
+      .get("http://localhost:8081/getRejectedTickets")
       .then((res) => {
         if (res.data.Status === "Success") {
           console.log(res.data.Result);
@@ -89,16 +89,11 @@ function Profile() {
               </th>
               <th
                 className="pointer"
-                id="changeColorHeader"
                 onClick={() => sorting("endCustomerLocation")}
               >
                 Raised Date
               </th>
-              <th
-                className="pointer"
-                onClick={() => sorting("respondedDate2")}
-                id="changeColorHeader"
-              >
+              <th className="pointer" onClick={() => sorting("resondedDate2")}>
                 Responded Date
               </th>
               <th
@@ -122,12 +117,14 @@ function Profile() {
               <th className="pointer" onClick={() => sorting("remarks")}>
                 User Remarks
               </th>
+              <th className="pointer" onClick={() => sorting("status")}>
+                Status
+              </th>
               <th
                 className="pointer"
-                id="changeColorHeader"
-                onClick={() => sorting("status")}
+                onClick={() => sorting("superUserRemark")}
               >
-                Status
+                Super User Remark
               </th>
 
               {/* <th>Action</th> */}
@@ -144,10 +141,10 @@ function Profile() {
                   <td className="ticketWidth">{tickets.location}</td>
                   <td className="ticketWidth">{tickets.endCustomerName}</td>
                   <td className="ticketWidth">{tickets.endCustomerLocation}</td>
-                  <td className="ticketWidth dateColumn" id="changeColor">
+                  <td className="ticketWidth dateColumn">
                     {tickets.createdDate}
                   </td>
-                  <td className="ticketWidth dateColumn" id="changeColor">
+                  <td className="ticketWidth dateColumn">
                     {tickets.respondedDate2}
                   </td>
 
@@ -160,9 +157,9 @@ function Profile() {
 
                   <td className="ticketWidth">{tickets.targetPrice}</td>
                   <td className="ticketWidth">{tickets.remarks}</td>
-                  <td className="ticketWidth statusResult" id="changeColor">
-                    {tickets.status}
-                  </td>
+                  <td className="ticketWidth statusResult">{tickets.status}</td>
+                  <td className="ticketWidth">{tickets.superUserRemark}</td>
+
                   {/* <td> */}
                   {/* <Link
                       to={`/editTicket/` + tickets.id}
@@ -183,4 +180,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default SuperRejectedTicket;

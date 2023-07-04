@@ -5,6 +5,24 @@ import axios from "axios";
 
 function SuperUser() {
   const [data, setData] = useState([]);
+  const [order, setorder] = useState("ASC");
+  axios.defaults.withCredentials = true;
+  const sorting = (col) => {
+    if (order === "ASC") {
+      const sorted = [...data].sort((a, b) =>
+        a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
+      );
+      setData(sorted);
+      setorder("DSC");
+    }
+    if (order === "DSC") {
+      const sorted = [...data].sort((a, b) =>
+        a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
+      );
+      setData(sorted);
+      setorder("ASC");
+    }
+  };
 
   useEffect(() => {
     axios
@@ -35,19 +53,26 @@ function SuperUser() {
   return (
     <div className="px-5 py-3">
       <div className="d-flex justify-content-center mt-2">
-        <h3>User List</h3>
+        <h3>Super User List</h3>
       </div>
       <Link to="/addSuperUsers" className="btn btn-success">
         Add Super User
       </Link>
-      <div className="mt-3">
+      <div className="mt-3 tableFixHead">
         <table className="table">
           <thead>
-            <tr>
-              <th>Name</th>
+            <tr className="red">
+              <th>ID</th>
+              <th className="pointer" onClick={() => sorting("name")}>
+                Name
+              </th>
               {/* <th>Image</th> */}
-              <th>Email</th>
-              <th>Location</th>
+              <th className="pointer" onClick={() => sorting("email")}>
+                Email
+              </th>
+              <th className="pointer" onClick={() => sorting("location")}>
+                Location
+              </th>
               <th>Action</th>
             </tr>
           </thead>
@@ -55,6 +80,7 @@ function SuperUser() {
             {data.map((user, index) => {
               return (
                 <tr key={index}>
+                  <td>{user.id}</td>
                   <td>{user.name}</td>
                   {/* <td>
                     {
@@ -83,7 +109,12 @@ function SuperUser() {
                     >
                       delete
                     </button> */}
-
+                    <Link
+                      to={`/EditSuperUser/` + user.id}
+                      className="btn btn-primary btn-sm me-2"
+                    >
+                      edit
+                    </Link>
                     <button
                       onClick={(e) => handleDelete(user.id)}
                       className="btn btn-sm btn-danger"

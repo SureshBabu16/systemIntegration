@@ -12,6 +12,7 @@ function AddSuperUsers() {
     location: "",
     // image: "",
   });
+  axios.defaults.withCredentials = true;
   const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();

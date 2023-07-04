@@ -1,11 +1,15 @@
 // import React from "react";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+// import moment from "moment";
 
-function Profile() {
+function UserTicketView() {
+  const { id } = useParams();
+
   const [data, setData] = useState([]);
   const [order, setorder] = useState("ASC");
+  // const [user, setUser] = useState([]);
   axios.defaults.withCredentials = true;
   const sorting = (col) => {
     if (order === "ASC") {
@@ -23,29 +27,34 @@ function Profile() {
       setorder("ASC");
     }
   };
+
   useEffect(() => {
     axios
-      .get("http://localhost:8081/getTicketsAdmin")
+      .get("http://localhost:8081/userGetTickets/" + id)
       .then((res) => {
+        // const changeDateFormat = res.data.Result[i].risedDate;
+        // const NewDate = moment(changeDateFormat, "DD/MM/YYYY");
+        // console.log(NewDate);
         if (res.data.Status === "Success") {
-          console.log(res.data.Result);
-          setData(res.data.Result);
+          // console.log(res.data.Result);
+          // console.log(res.data.Result[0]);
+
+          // if (data === id) {
+          for (let i = 0; i < res.data.Result.length; i++) {
+            if (res.data.Result[i].createdId) {
+              // if (res.data.Result[i].status === "Rejected") {
+              //   document.getElementById("colorInput").style.color = "red";
+              // }
+
+              setData(res.data.Result);
+            }
+          }
         } else {
           alert("Error");
         }
       })
       .catch((err) => console.log(err));
   }, []);
-
-  // var statusResult = document.getElementsByClassName("statusResult").innerText;
-  // for (var i = 0; i <= statusResult.length; i++) {
-  // console.log(statusResult[i]);
-  //   statusResult[i]
-  // }
-  // console.log(statusResult);
-  // if (statusResult === "Rejected") {
-
-  // }
 
   return (
     <div className="px-5 py-3">
@@ -59,12 +68,8 @@ function Profile() {
         <table className="table">
           <thead>
             <tr className="red">
-              <th className="pointer" onClick={() => sorting("id")}>
-                Ticket Person ID
-              </th>
-              <th className="pointer" onClick={() => sorting("createdId")}>
-                Sales Person ID
-              </th>
+              <th>Ticket ID</th>
+              <th>Sales Person ID</th>
               <th
                 className="pointer"
                 onClick={() => sorting("salesPersonName")}
@@ -89,14 +94,14 @@ function Profile() {
               </th>
               <th
                 className="pointer"
-                id="changeColorHeader"
                 onClick={() => sorting("endCustomerLocation")}
+                id="changeColorHeader"
               >
-                Raised Date
+                Rise Date
               </th>
               <th
                 className="pointer"
-                onClick={() => sorting("respondedDate2")}
+                onClick={() => sorting("respondedDate")}
                 id="changeColorHeader"
               >
                 Responded Date
@@ -124,10 +129,16 @@ function Profile() {
               </th>
               <th
                 className="pointer"
-                id="changeColorHeader"
                 onClick={() => sorting("status")}
+                id="changeColorHeader"
               >
                 Status
+              </th>
+              <th
+                className="pointer"
+                onClick={() => sorting("superUserRemark")}
+              >
+                Super User Remark
               </th>
 
               {/* <th>Action</th> */}
@@ -138,19 +149,19 @@ function Profile() {
               return (
                 <tr key={index}>
                   <td className="ticketWidth">{tickets.id}</td>
+
                   <td className="ticketWidth">{tickets.createdId}</td>
                   <td className="ticketWidth">{tickets.salesPersonName}</td>
 
                   <td className="ticketWidth">{tickets.location}</td>
                   <td className="ticketWidth">{tickets.endCustomerName}</td>
                   <td className="ticketWidth">{tickets.endCustomerLocation}</td>
-                  <td className="ticketWidth dateColumn" id="changeColor">
+                  <td className="ticketWidth" id="changeColor">
                     {tickets.createdDate}
                   </td>
-                  <td className="ticketWidth dateColumn" id="changeColor">
+                  <td className="ticketWidth" id="changeColor">
                     {tickets.respondedDate2}
                   </td>
-
                   <td className="ticketWidth">
                     {tickets.productSpecification}
                   </td>
@@ -160,10 +171,12 @@ function Profile() {
 
                   <td className="ticketWidth">{tickets.targetPrice}</td>
                   <td className="ticketWidth">{tickets.remarks}</td>
-                  <td className="ticketWidth statusResult" id="changeColor">
+                  <td className="ticketWidth" id="changeColor">
                     {tickets.status}
+                    {/* <span id="colorInput">{tickets.status}</span> */}
                   </td>
-                  {/* <td> */}
+                  <td className="ticketWidth">{tickets.superUserRemark}</td>
+
                   {/* <Link
                       to={`/editTicket/` + tickets.id}
                       className="btn btn-primary btn-sm me-2"
@@ -172,7 +185,6 @@ function Profile() {
                     </Link> */}
 
                   {/* <button className="btn btn-sm btn-danger">delete</button> */}
-                  {/* </td> */}
                 </tr>
               );
             })}
@@ -183,4 +195,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default UserTicketView;

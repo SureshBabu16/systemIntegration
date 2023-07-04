@@ -13,7 +13,6 @@ function Dashboard() {
       .get("http://localhost:8081/getUsers")
       .then((res) => {
         if (res.data.Status === "Success") {
-          console.log(res.data.Result);
           setData(res.data.Result);
         } else {
           alert("Error");
@@ -37,12 +36,9 @@ function Dashboard() {
       <div className="row flex-nowrap">
         <div className="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
           <div className="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-            <a
-              href="/"
-              className="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none"
-            >
+            <div className="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
               <span className="fs-5 d-none d-sm-inline">User Dashboard</span>
-            </a>
+            </div>
             <ul
               // key={index}
               className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
@@ -61,7 +57,7 @@ function Dashboard() {
               </li> */}
               <li>
                 <Link
-                  to={"superUserTicket"}
+                  to={"userTicketView"}
                   className="nav-link px-0 align-middle text-white"
                 >
                   <i className="fs-4 bi-ticket"></i>
@@ -91,6 +87,7 @@ function Dashboard() {
           <div className="p-2 d-flex justify-content-center shadow">
             <h4>System Integration</h4>
           </div>
+
           <Outlet />
         </div>
       </div>

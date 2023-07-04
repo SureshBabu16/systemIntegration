@@ -8,9 +8,11 @@ function AddUsers() {
     name: "",
     email: "",
     password: "",
+    location: "",
     // role: "",
-    image: "",
+    // image: "",
   });
+  axios.defaults.withCredentials = true;
   const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -18,13 +20,14 @@ function AddUsers() {
     formdata.append("name", data.name);
     formdata.append("email", data.email);
     formdata.append("password", data.password);
+    formdata.append("location", data.location);
     // formdata.append("role", data.role);
-    formdata.append("image", data.image);
+    // formdata.append("image", data.image);
 
     console.log(formdata);
 
     axios
-      .post("http://localhost:8081/addUsers", formdata)
+      .post("http://localhost:8081/addUsers", data)
       .then((res) => {
         navigate("/users");
         // console.log(res);
@@ -73,6 +76,18 @@ function AddUsers() {
             onChange={(e) => setData({ ...data, password: e.target.value })}
           />
         </div>
+        <div className="col-12">
+          <label htmlFor="inputLocation4" className="form-label">
+            Location
+          </label>
+          <input
+            type="Location"
+            className="form-control"
+            id="inputLocation4"
+            placeholder="Enter Location"
+            onChange={(e) => setData({ ...data, location: e.target.value })}
+          />
+        </div>
         {/* <div className="col-12">
           <label htmlFor="inputPassword4" className="form-label"></label>
           <Form.Select
@@ -84,7 +99,7 @@ function AddUsers() {
             <option value="User">User</option>
           </Form.Select>
         </div> */}
-        <div className="col-12 mb-3">
+        {/* <div className="col-12 mb-3">
           <label className="form-label" htmlFor="inputGroupFile01">
             Select Image
           </label>
@@ -94,7 +109,7 @@ function AddUsers() {
             id="inputGroupFile01"
             onChange={(e) => setData({ ...data, image: e.target.files[0] })}
           />
-        </div>
+        </div> */}
 
         <div className="col-12">
           <button type="submit" className="btn btn-primary">

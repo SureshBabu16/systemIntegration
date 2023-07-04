@@ -5,6 +5,24 @@ import axios from "axios";
 
 function User() {
   const [data, setData] = useState([]);
+  const [order, setorder] = useState("ASC");
+  axios.defaults.withCredentials = true;
+  const sorting = (col) => {
+    if (order === "ASC") {
+      const sorted = [...data].sort((a, b) =>
+        a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
+      );
+      setData(sorted);
+      setorder("DSC");
+    }
+    if (order === "DSC") {
+      const sorted = [...data].sort((a, b) =>
+        a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
+      );
+      setData(sorted);
+      setorder("ASC");
+    }
+  };
 
   useEffect(() => {
     axios
@@ -40,13 +58,21 @@ function User() {
       <Link to="/addUsers" className="btn btn-success">
         Add User
       </Link>
-      <div className="mt-3">
+      <div className="mt-3 tableFixHead">
         <table className="table">
           <thead>
-            <tr>
-              <th>Name</th>
-              <th>Image</th>
-              <th>Email</th>
+            <tr className="red">
+              <th>ID</th>
+              <th className="pointer" onClick={() => sorting("name")}>
+                Name
+              </th>
+              {/* <th>Image</th> */}
+              <th className="pointer" onClick={() => sorting("email")}>
+                Email
+              </th>
+              <th className="pointer" onClick={() => sorting("Location")}>
+                Location
+              </th>
               {/* <th>Role</th> */}
               <th>Action</th>
             </tr>
@@ -55,8 +81,9 @@ function User() {
             {data.map((user, index) => {
               return (
                 <tr key={index}>
+                  <td>{user.id}</td>
                   <td>{user.name}</td>
-                  <td>
+                  {/* <td>
                     {
                       <img
                         src={`http://localhost:8081/images/` + user.image}
@@ -64,8 +91,9 @@ function User() {
                         className="user_image"
                       />
                     }
-                  </td>
+                  </td> */}
                   <td>{user.email}</td>
+                  <td>{user.Location}</td>
                   {/* <td>{user.role}</td> */}
                   {/* <td>{user.address}</td>
                   <td>{user.salary}</td> */}

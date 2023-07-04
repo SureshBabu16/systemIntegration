@@ -1,17 +1,19 @@
 .loginPage {
-  background: url("images/bg.jpg");
+  background: url("images/bg2.jpg");
   background-position: center;
   background-repeat: no-repeat;
   /* background: linear-gradient(rgba(11, 11, 11, 0.5), rgba(10, 10, 10, 0.5)), url("images/bg.jpg"); */
   min-width: 100%;
   min-height: 100%;
+  background-size: cover;
   position: fixed;
   z-index: -1;
 }
 
 .loginForm {
-  background-color: rgba(1, 32, 93, 0.6);
-  color: white;
+  /* background-color: rgba(1, 32, 93, 0.6); */
+  background-color: #fff;
+  color: #000;
 }
 
 .user_image {
@@ -25,6 +27,11 @@
   height: 400px;
   border-radius: 50%;
 }
+
+/* .dateColumn {
+  color: #fff;
+  background-color: #212529;
+} */
 
 /* .tableHeaderPosition {
   position: fixed;
@@ -52,6 +59,109 @@
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
+/* .pointer.active.desc:after {
+  content: "▲";
+} */
+
+.pointer:after {
+  /* left: 50px; */
+  content: "▼";
+  float: right;
+}
+
+#changeColor {
+  background-color: #adefd1ff;
+}
+
+#changeColorHeader {
+  background-color: #00203fff;
+  color: #fff;
+}
+
+table {
+  text-align: left;
+  position: relative;
+  border-collapse: collapse;
+}
+
+.table > :not(caption) > * > * {
+  /* padding: 0.5rem 0.5rem; */
+  background-color: var(--bs-table-bg);
+  border-width: 1px;
+  box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+}
+
+th,
+td {
+  padding: 0.25rem;
+}
+
+tr.red th {
+  /* --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important; */
+  background: gray;
+  color: white;
+}
+
+th {
+  background: white;
+  position: sticky;
+  top: 0;
+  /* Don't forget this, required for the stickiness */
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+}
+
 /* .riseTicketForm {
   background-color: midnightblue;
 } */
+
+/* .tableFixHead {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.tableFixHead tbody {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  height: 50px;
+}
+
+.tableFixHead thead tr {
+  display: block;
+}
+
+.tableFixHead th,
+.tableFixHead td {
+  padding: 5px 10px;
+  width: 200px;
+}
+
+th {
+  background: #abdd93;
+} */
+
+.getUserId {
+  visibility: hidden;
+}
+
+#respondedDate2 {
+  visibility: hidden;
+}
+
+.statusColumnTicket {
+  display: flex;
+}
+
+.bi-check-circle-fill {
+  color: green;
+}
+
+.bi-x-circle-fill {
+  color: red;
+}
+
+.buttonHidden {
+  display: flex;
+}

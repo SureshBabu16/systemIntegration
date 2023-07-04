@@ -7,9 +7,11 @@ function Profile() {
   const navigate = useNavigate();
   const [user, setUser] = useState([]);
   const [newticketCount, setticketCount] = useState();
+  // console.log(user);
+  axios.defaults.withCredentials = true;
   useEffect(() => {
     axios
-      .get("http://localhost:8081/get/" + id)
+      .get("http://localhost:8081/getUser/" + id)
       .then((res) => setUser(res.data.Result[0]))
       .catch((err) => console.log(err));
     axios
@@ -37,18 +39,12 @@ function Profile() {
           className="userImg"
         />
         <div className="d-flex align-items-center flex-column mt-5">
+          <h3>ID: {user.id}</h3>
           <h3>Name: {user.name}</h3>
           <h3>Email: {user.email}</h3>
-          <h3>Active Tickets: {newticketCount}</h3>
+          {/* <h3>Active Tickets: {user.}</h3> */}
+          {/* <h3>Active Tickets: {newticketCount}</h3> */}
         </div>
-        {/* <div>
-          <Link to="/riseTicket" className="btn btn-success  me-2">
-            Rise Ticket
-          </Link>
-          <button className="btn btn-danger" onClick={handleLogout}>
-            Logout
-          </button>
-        </div> */}
       </div>
     </div>
   );
